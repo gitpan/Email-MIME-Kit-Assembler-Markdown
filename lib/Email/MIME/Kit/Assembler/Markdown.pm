@@ -1,5 +1,5 @@
 package Email::MIME::Kit::Assembler::Markdown;
-our $VERSION = '0.091520';
+our $VERSION = '0.091560';
 
 use Moose;
 with 'Email::MIME::Kit::Role::Assembler';
@@ -16,6 +16,11 @@ has manifest => (
 );
 
 has html_wrapper => (
+  is  => 'ro',
+  isa => 'Str',
+);
+
+has text_wrapper => (
   is  => 'ro',
   isa => 'Str',
 );
@@ -95,18 +100,25 @@ sub assemble {
     $markdown = $$output_ref;
   }
 
-  my $html_content = Text::Markdown->new(tab_width => 2)->markdown($markdown);
-  my $wrapper_path = $self->html_wrapper;
-  if ($wrapper_path) {
-    my $wrapper = ${ $self->kit->get_kit_entry($wrapper_path) };
-    my $marker  = $self->marker;
-    my $marker_re = qr{<!--\s+\Q$marker\E\s+-->};
+  my %content = (
+    html => Text::Markdown->new(tab_width => 2)->markdown($markdown),
+    text => $markdown,
+  );
 
-    confess 'html_wrapper content does not contain comment containing marker'
-      unless $wrapper =~ $marker_re;
+  for my $type (keys %content) {
+    my $type_wrapper = "$type\_wrapper";
 
-    $wrapper =~ s/$marker_re/$html_content/;
-    $html_content = $wrapper;
+    if (my $wrapper_path = $self->$type_wrapper) {
+      my $wrapper = ${ $self->kit->get_kit_entry($wrapper_path) };
+      my $marker  = $self->marker;
+      my $marker_re = qr{<!--\s+\Q$marker\E\s+-->};
+
+      confess "$type_wrapper does not contain comment containing marker"
+        unless $wrapper =~ $marker_re;
+
+      $wrapper =~ s/$marker_re/$content{$type}/;
+      $content{$type} = $wrapper;
+    }
   }
 
   my $header = $self->_prep_header(
@@ -115,7 +127,7 @@ sub assemble {
   );
 
   my $html_part = Email::MIME->create(
-    body   => $html_content,
+    body   => $content{html},
     attributes => {
       content_type => "text/html",
       charset      => 'utf-8',
@@ -124,7 +136,7 @@ sub assemble {
   );
 
   my $text_part = Email::MIME->create(
-    body   => $markdown,
+    body   => $content{text},
     attributes => {
       content_type => "text/plain",
       charset      => 'utf-8',
@@ -155,7 +167,7 @@ Email::MIME::Kit::Assembler::Markdown - build multipart/alternative messages fro
 
 =head1 VERSION
 
-version 0.091520
+version 0.091560
 
 =for Pod::Coverage assemble BUILD
 
@@ -195,6 +207,10 @@ marker is C<CONTENT>, so the F<wrapper.html> used above might read as follows:
   <h1>DynaWoop Dynamic Woopages</h1>
   <!-- CONTENT -->
   <p>Click to unsubscribe: <a href="[% unsub_url %]">here</a></p>
+
+The C<text_wrapper> setting works exactly the same way, down to looking for an
+HTML-like comment containing the marker.  It wraps the Markdown content after
+it has been rendered by the kit's Renderer, if any.
 
 =head1 AUTHOR
 

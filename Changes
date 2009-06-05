@@ -1,0 +1,4 @@
+Revision history for Email-MIME-Kit-Assembler-Markdown
+
+0.091560  2009-06-05 21:14:31 UTC
+          add text_wrapper to parallel html_wrapper (APEIRON)
