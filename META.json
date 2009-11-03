@@ -1,20 +1,20 @@
 {
    "resources" : {
-      "repository" : "http://github.com/rjbs/email-mime-kit-assembler-markdown/tree"
+      "repository" : "http://github.com/rjbs/email-mime-kit-assembler-markdown"
    },
    "meta-spec" : {
       "version" : 1.4,
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
-   "generated_by" : "Dist::Zilla::Plugin::MetaJSON version 1.091480",
-   "version" : "0.091560",
+   "generated_by" : "Dist::Zilla version 1.092990",
+   "version" : "0.093070",
    "name" : "Email-MIME-Kit-Assembler-Markdown",
    "author" : [
       "Ricardo Signes <rjbs@cpan.org>"
    ],
    "license" : "perl",
    "requires" : {
-      "Email::MIME::Kit" : "2.003",
+      "Email::MIME::Kit" : "2.093070",
       "Text::Markdown" : "0"
    },
    "abstract" : "build multipart/alternative messages from Markdown alone"

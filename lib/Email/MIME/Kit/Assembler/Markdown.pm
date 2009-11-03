@@ -1,11 +1,12 @@
 package Email::MIME::Kit::Assembler::Markdown;
-our $VERSION = '0.091560';
+our $VERSION = '0.093070';
+
 
 use Moose;
 with 'Email::MIME::Kit::Role::Assembler';
 # ABSTRACT: build multipart/alternative messages from Markdown alone
 
-use Email::MIME::Creator;
+use Email::MIME 1.900;
 use Moose::Util::TypeConstraints qw(maybe_type role_type);
 use Text::Markdown;
 
@@ -81,10 +82,6 @@ sub _prep_header {
       $value = ${ $renderer->render(\$value, $stash) } if defined $renderer;
     }
 
-    {
-      use bytes;
-      $value = Encode::encode('MIME-Q', $value) if $value =~ /[\x80-\xff]/;
-    }
     push @done_header, $hval[0] => $value;
   }
 
@@ -145,8 +142,8 @@ sub assemble {
   );
 
   my $container = Email::MIME->create(
-    header => $header,
-    parts  => [ $text_part, $html_part ],
+    header_str => $header,
+    parts      => [ $text_part, $html_part ],
     attributes => { content_type => 'multipart/alternative' },
   );
 
@@ -158,7 +155,6 @@ no Moose::Util::TypeConstraints;
 1;
 
 __END__
-
 =pod
 
 =head1 NAME
@@ -167,9 +163,7 @@ Email::MIME::Kit::Assembler::Markdown - build multipart/alternative messages fro
 
 =head1 VERSION
 
-version 0.091560
-
-=for Pod::Coverage assemble BUILD
+version 0.093070
 
 =head1 SYNOPSIS
 
@@ -212,6 +206,8 @@ The C<text_wrapper> setting works exactly the same way, down to looking for an
 HTML-like comment containing the marker.  It wraps the Markdown content after
 it has been rendered by the kit's Renderer, if any.
 
+=for Pod::Coverage assemble BUILD
+
 =head1 AUTHOR
 
   Ricardo Signes <rjbs@cpan.org>
@@ -221,8 +217,7 @@ it has been rendered by the kit's Renderer, if any.
 This software is copyright (c) 2009 by Ricardo Signes.
 
 This is free software; you can redistribute it and/or modify it under
-the same terms as perl itself.
+the same terms as the Perl 5 programming language system itself.
 
-=cut 
-
+=cut
 

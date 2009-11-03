@@ -11,3 +11,5 @@ t/kit/sample.mkit/body.mkdn
 t/kit/sample.mkit/manifest.json
 t/kit/sample.mkit/wrapper.html
 t/kit/sample.mkit/wrapper.txt
+t/release-pod-coverage.t
+t/release-pod-syntax.t
