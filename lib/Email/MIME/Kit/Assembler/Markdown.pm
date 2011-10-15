@@ -1,7 +1,7 @@
 package Email::MIME::Kit::Assembler::Markdown;
-our $VERSION = '0.093070';
-
-
+{
+  $Email::MIME::Kit::Assembler::Markdown::VERSION = '0.093071';
+}
 use Moose;
 with 'Email::MIME::Kit::Role::Assembler';
 # ABSTRACT: build multipart/alternative messages from Markdown alone
@@ -163,7 +163,7 @@ Email::MIME::Kit::Assembler::Markdown - build multipart/alternative messages fro
 
 =head1 VERSION
 
-version 0.093070
+version 0.093071
 
 =head1 SYNOPSIS
 
@@ -210,11 +210,11 @@ it has been rendered by the kit's Renderer, if any.
 
 =head1 AUTHOR
 
-  Ricardo Signes <rjbs@cpan.org>
+Ricardo Signes <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Ricardo Signes.
+This software is copyright (c) 2011 by Ricardo Signes.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
