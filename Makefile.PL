@@ -32,7 +32,7 @@ my %WriteMakefileArgs = (
     "Moose::Util::TypeConstraints" => 0,
     "Text::Markdown" => 0
   },
-  "VERSION" => "0.093071",
+  "VERSION" => "0.100000",
   "test" => {
     "TESTS" => "t/*.t"
   }
