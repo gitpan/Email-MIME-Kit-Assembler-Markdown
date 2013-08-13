@@ -7,6 +7,8 @@ Makefile.PL
 README
 dist.ini
 lib/Email/MIME/Kit/Assembler/Markdown.pm
+t/00-compile.t
+t/000-report-versions-tiny.t
 t/basic.t
 t/kit/sample-munge.mkit/body.mkdn
 t/kit/sample-munge.mkit/manifest.json
@@ -16,4 +18,5 @@ t/kit/sample.mkit/body.mkdn
 t/kit/sample.mkit/manifest.json
 t/kit/sample.mkit/wrapper.html
 t/kit/sample.mkit/wrapper.txt
-t/release-pod-syntax.t
+xt/release/changes_has_content.t
+xt/release/pod-syntax.t
